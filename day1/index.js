@@ -20,8 +20,8 @@ const readline = require('readline');
 (async function processLineByLine() {
   try {
     const rl = readline.createInterface({
-      // input: fs.createReadStream('./Day1_Calorie_Counting/input-basic.txt'),
-      input: fs.createReadStream('./Day1_Calorie_Counting/input.txt'),
+      // input: fs.createReadStream(`${__dirname}/input-basic.txt`),
+      input: fs.createReadStream(`${__dirname}/input.txt`),
       crlfDelay: Infinity
     });
 

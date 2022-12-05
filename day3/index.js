@@ -9,8 +9,8 @@ const alphaVal = (s) => s.toLowerCase().charCodeAt(0) - 97 + 1;
 (async function processLineByLine() {
   try {
     const rl = readline.createInterface({
-      // input: fs.createReadStream('./day3/input-basic.txt'),
-      input: fs.createReadStream('./day3/input.txt'),
+      // input: fs.createReadStream(`${__dirname}/input-basic.txt`),
+      input: fs.createReadStream(`${__dirname}/input.txt`),
       crlfDelay: Infinity
     });
 
