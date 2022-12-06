@@ -1,50 +1,105 @@
---- Day 2: Rock Paper Scissors ---
-The Elves begin to set up camp on the beach. To decide whose tent gets to be closest to the snack storage, a giant Rock Paper Scissors tournament is already in progress.
+--- Day 5: Supply Stacks ---
+The expedition can depart as soon as the final supplies have been unloaded from the ships. Supplies are stored in stacks of marked crates, but because the needed supplies are buried under many other crates, the crates need to be rearranged.
 
-Rock Paper Scissors is a game between two players. Each game contains many rounds; in each round, the players each simultaneously choose one of Rock, Paper, or Scissors using a hand shape. Then, a winner for that round is selected: Rock defeats Scissors, Scissors defeats Paper, and Paper defeats Rock. If both players choose the same shape, the round instead ends in a draw.
+The ship has a giant cargo crane capable of moving crates between stacks. To ensure none of the crates get crushed or fall over, the crane operator will rearrange them in a series of carefully-planned steps. After the crates are rearranged, the desired crates will be at the top of each stack.
 
-Appreciative of your help yesterday, one Elf gives you an encrypted strategy guide (your puzzle input) that they say will be sure to help you win. "The first column is what your opponent is going to play: A for Rock, B for Paper, and C for Scissors. The second column--" Suddenly, the Elf is called away to help with someone's tent.
+The Elves don't want to interrupt the crane operator during this delicate procedure, but they forgot to ask her which crate will end up where, and they want to be ready to unload them as soon as possible so they can embark.
 
-The second column, you reason, must be what you should play in response: X for Rock, Y for Paper, and Z for Scissors. Winning every time would be suspicious, so the responses must have been carefully chosen.
+They do, however, have a drawing of the starting stacks of crates and the rearrangement procedure (your puzzle input). For example:
 
-The winner of the whole tournament is the player with the highest score. Your total score is the sum of your scores for each round. The score for a single round is the score for the shape you selected (1 for Rock, 2 for Paper, and 3 for Scissors) plus the score for the outcome of the round (0 if you lost, 3 if the round was a draw, and 6 if you won).
+    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
 
-Since you can't be sure if the Elf is trying to help you or trick you, you should calculate the score you would get if you were to follow the strategy guide.
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2
+In this example, there are three stacks of crates. Stack 1 contains two crates: crate Z is on the bottom, and crate N is on top. Stack 2 contains three crates; from bottom to top, they are crates M, C, and D. Finally, stack 3 contains a single crate, P.
 
-For example, suppose you were given the following strategy guide:
+Then, the rearrangement procedure is given. In each step of the procedure, a quantity of crates is moved from one stack to a different stack. In the first step of the above rearrangement procedure, one crate is moved from stack 2 to stack 1, resulting in this configuration:
 
-A Y
-B X
-C Z
-This strategy guide predicts and recommends the following:
+[D]        
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+In the second step, three crates are moved from stack 1 to stack 3. Crates are moved one at a time, so the first crate to be moved (D) ends up below the second and third crates:
 
-In the first round, your opponent will choose Rock (A), and you should choose Paper (Y). This ends in a win for you with a score of 8 (2 because you chose Paper + 6 because you won).
-In the second round, your opponent will choose Paper (B), and you should choose Rock (X). This ends in a loss for you with a score of 1 (1 + 0).
-The third round is a draw with both players choosing Scissors, giving you a score of 3 + 3 = 6.
-In this example, if you were to follow the strategy guide, you would get a total score of 15 (8 + 1 + 6).
+        [Z]
+        [N]
+    [C] [D]
+    [M] [P]
+ 1   2   3
+Then, both crates are moved from stack 2 to stack 1. Again, because crates are moved one at a time, crate C ends up below crate M:
 
-What would your total score be if everything goes exactly according to your strategy guide?
+        [Z]
+        [N]
+[M]     [D]
+[C]     [P]
+ 1   2   3
+Finally, one crate is moved from stack 1 to stack 2:
 
-Your puzzle answer was 12740.
+        [Z]
+        [N]
+        [D]
+[C] [M] [P]
+ 1   2   3
+The Elves just need to know which crate will end up on top of each stack; in this example, the top crates are C in stack 1, M in stack 2, and Z in stack 3, so you should combine these together and give the Elves the message CMZ.
+
+After the rearrangement procedure completes, what crate ends up on top of each stack?
+
+Your puzzle answer was VPCDMSLWJ.
+
+The first half of this puzzle is complete! It provides one gold star: *
 
 --- Part Two ---
-The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!"
+As you watch the crane operator expertly rearrange the crates, you notice the process isn't following your prediction.
 
-The total score is still calculated in the same way, but now you need to figure out what shape to choose so the round ends as indicated. The example above now goes like this:
+Some mud was covering the writing on the side of the crane, and you quickly wipe it away. The crane isn't a CrateMover 9000 - it's a CrateMover 9001.
 
-In the first round, your opponent will choose Rock (A), and you need the round to end in a draw (Y), so you also choose Rock. This gives you a score of 1 + 3 = 4.
-In the second round, your opponent will choose Paper (B), and you choose Rock so you lose (X) with a score of 1 + 0 = 1.
-In the third round, you will defeat your opponent's Scissors with Rock for a score of 1 + 6 = 7.
-Now that you're correctly decrypting the ultra top secret strategy guide, you would get a total score of 12.
+The CrateMover 9001 is notable for many new and exciting features: air conditioning, leather seats, an extra cup holder, and the ability to pick up and move multiple crates at once.
 
-Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide?
+Again considering the example above, the crates begin in the same configuration:
 
-Your puzzle answer was 11980.
+    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+Moving a single crate from stack 2 to stack 1 behaves the same as before:
 
-Both parts of this puzzle are complete! They provide two gold stars: **
+[D]        
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+However, the action of moving three crates from stack 1 to stack 3 means that those three moved crates stay in the same order, resulting in this new configuration:
 
-At this point, you should return to your Advent calendar and try another puzzle.
+        [D]
+        [N]
+    [C] [Z]
+    [M] [P]
+ 1   2   3
+Next, as both crates are moved from stack 2 to stack 1, they retain their order as well:
 
-If you still want to see it, you can get your puzzle input.
+        [D]
+        [N]
+[C]     [Z]
+[M]     [P]
+ 1   2   3
+Finally, a single crate is still moved from stack 1 to stack 2, but now it's crate C that gets moved:
+
+        [D]
+        [N]
+        [Z]
+[M] [C] [P]
+ 1   2   3
+In this example, the CrateMover 9001 has put the crates in a totally different order: MCD.
+
+Before the rearrangement process finishes, update your simulation so that the Elves know where they should stand to be ready to unload the final supplies. After the rearrangement procedure completes, what crate ends up on top of each stack?
+
+Answer: 
+ 
+
+Although it hasn't changed, you can still get your puzzle input.
 
 You can also [Share] this puzzle.

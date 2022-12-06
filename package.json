@@ -2,7 +2,7 @@
     "name": "my-app",
     "version": "0.1.0",
     "scripts": {
-      "start": "nodemon day4/index.js"
+      "start": "nodemon day5/index.js"
     }
   }
   
