@@ -3,6 +3,10 @@ const events = require('events');
 const fs = require('fs');
 const readline = require('readline');
 
+function checkForDuplicates(array) {
+  return new Set(array).size !== array.length
+}
+
 (async function processLineByLine() {
   try {
     const rl = readline.createInterface({
@@ -11,19 +15,45 @@ const readline = require('readline');
       crlfDelay: Infinity
     });
     
-    let score = 0
-    let scorePart2 = 0
+    // part 1
+    // rl.on('line', (line) => {
+    //   const arr = []
+    //   for(let i=0;i<line.length;i++){
+    //     if(i<3){
+    //       arr.push(line[i])
+    //     }else{
+    //       arr.push(line[i])
+    //       if(!checkForDuplicates(arr)){
+    //         console.log('arr',arr)
+    //         console.log('i',i+1)
+    //         break;
+    //       }
+    //       arr.shift()
+    //     }
 
+    //   }
+    // });
+
+    // part 2
     rl.on('line', (line) => {
-      // score += scoreMap[line]
-      // scorePart2 += scoreMapPart2[line]
+      const arr = []
+      for(let i=0;i<line.length;i++){
+        if(i<13){
+          arr.push(line[i])
+        }else{
+          arr.push(line[i])
+          if(!checkForDuplicates(arr)){
+            console.log('arr',arr)
+            console.log('i',i+1)
+            break;
+          }
+          arr.shift()
+        }
+
+      }
     });
 
     await events.once(rl, 'close');
-
-
-    console.log(`score: ${score}`);
-    console.log(`scorePart2: ${scorePart2}`);
 
   } catch (err) {
     console.error(err);
