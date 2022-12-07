@@ -1,45 +1,98 @@
---- Day 2: Rock Paper Scissors ---
-The Elves begin to set up camp on the beach. To decide whose tent gets to be closest to the snack storage, a giant Rock Paper Scissors tournament is already in progress.
+--- Day 7: No Space Left On Device ---
+You can hear birds chirping and raindrops hitting leaves as the expedition proceeds. Occasionally, you can even hear much louder sounds in the distance; how big do the animals get out here, anyway?
 
-Rock Paper Scissors is a game between two players. Each game contains many rounds; in each round, the players each simultaneously choose one of Rock, Paper, or Scissors using a hand shape. Then, a winner for that round is selected: Rock defeats Scissors, Scissors defeats Paper, and Paper defeats Rock. If both players choose the same shape, the round instead ends in a draw.
+The device the Elves gave you has problems with more than just its communication system. You try to run a system update:
 
-Appreciative of your help yesterday, one Elf gives you an encrypted strategy guide (your puzzle input) that they say will be sure to help you win. "The first column is what your opponent is going to play: A for Rock, B for Paper, and C for Scissors. The second column--" Suddenly, the Elf is called away to help with someone's tent.
+$ system-update --please --pretty-please-with-sugar-on-top
+Error: No space left on device
+Perhaps you can delete some files to make space for the update?
 
-The second column, you reason, must be what you should play in response: X for Rock, Y for Paper, and Z for Scissors. Winning every time would be suspicious, so the responses must have been carefully chosen.
+You browse around the filesystem to assess the situation and save the resulting terminal output (your puzzle input). For example:
 
-The winner of the whole tournament is the player with the highest score. Your total score is the sum of your scores for each round. The score for a single round is the score for the shape you selected (1 for Rock, 2 for Paper, and 3 for Scissors) plus the score for the outcome of the round (0 if you lost, 3 if the round was a draw, and 6 if you won).
+$ cd /
+$ ls
+dir a
+14848514 b.txt
+8504156 c.dat
+dir d
+$ cd a
+$ ls
+dir e
+29116 f
+2557 g
+62596 h.lst
+$ cd e
+$ ls
+584 i
+$ cd ..
+$ cd ..
+$ cd d
+$ ls
+4060174 j
+8033020 d.log
+5626152 d.ext
+7214296 k
+The filesystem consists of a tree of files (plain data) and directories (which can contain other directories or files). The outermost directory is called /. You can navigate around the filesystem, moving into or out of directories and listing the contents of the directory you're currently in.
 
-Since you can't be sure if the Elf is trying to help you or trick you, you should calculate the score you would get if you were to follow the strategy guide.
+Within the terminal output, lines that begin with $ are commands you executed, very much like some modern computers:
 
-For example, suppose you were given the following strategy guide:
+cd means change directory. This changes which directory is the current directory, but the specific result depends on the argument:
+cd x moves in one level: it looks in the current directory for the directory named x and makes it the current directory.
+cd .. moves out one level: it finds the directory that contains the current directory, then makes that directory the current directory.
+cd / switches the current directory to the outermost directory, /.
+ls means list. It prints out all of the files and directories immediately contained by the current directory:
+123 abc means that the current directory contains a file named abc with size 123.
+dir xyz means that the current directory contains a directory named xyz.
+Given the commands and output in the example above, you can determine that the filesystem looks visually like this:
 
-A Y
-B X
-C Z
-This strategy guide predicts and recommends the following:
+- / (dir)
+  - a (dir)
+    - e (dir)
+      - i (file, size=584)
+    - f (file, size=29116)
+    - g (file, size=2557)
+    - h.lst (file, size=62596)
+  - b.txt (file, size=14848514)
+  - c.dat (file, size=8504156)
+  - d (dir)
+    - j (file, size=4060174)
+    - d.log (file, size=8033020)
+    - d.ext (file, size=5626152)
+    - k (file, size=7214296)
+Here, there are four directories: / (the outermost directory), a and d (which are in /), and e (which is in a). These directories also contain files of various sizes.
 
-In the first round, your opponent will choose Rock (A), and you should choose Paper (Y). This ends in a win for you with a score of 8 (2 because you chose Paper + 6 because you won).
-In the second round, your opponent will choose Paper (B), and you should choose Rock (X). This ends in a loss for you with a score of 1 (1 + 0).
-The third round is a draw with both players choosing Scissors, giving you a score of 3 + 3 = 6.
-In this example, if you were to follow the strategy guide, you would get a total score of 15 (8 + 1 + 6).
+Since the disk is full, your first step should probably be to find directories that are good candidates for deletion. To do this, you need to determine the total size of each directory. The total size of a directory is the sum of the sizes of the files it contains, directly or indirectly. (Directories themselves do not count as having any intrinsic size.)
 
-What would your total score be if everything goes exactly according to your strategy guide?
+The total sizes of the directories above can be found as follows:
 
-Your puzzle answer was 12740.
+The total size of directory e is 584 because it contains a single file i of size 584 and no other directories.
+The directory a has total size 94853 because it contains files f (size 29116), g (size 2557), and h.lst (size 62596), plus file i indirectly (a contains e which contains i).
+Directory d has total size 24933642.
+As the outermost directory, / contains every file. Its total size is 48381165, the sum of the size of every file.
+To begin, find all of the directories with a total size of at most 100000, then calculate the sum of their total sizes. In the example above, these directories are a and e; the sum of their total sizes is 95437 (94853 + 584). (As in this example, this process can count files more than once!)
+
+Find all of the directories with a total size of at most 100000. What is the sum of the total sizes of those directories?
+
+Your puzzle answer was 1477771.
 
 --- Part Two ---
-The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!"
+Now, you're ready to choose a directory to delete.
 
-The total score is still calculated in the same way, but now you need to figure out what shape to choose so the round ends as indicated. The example above now goes like this:
+The total disk space available to the filesystem is 70000000. To run the update, you need unused space of at least 30000000. You need to find a directory you can delete that will free up enough space to run the update.
 
-In the first round, your opponent will choose Rock (A), and you need the round to end in a draw (Y), so you also choose Rock. This gives you a score of 1 + 3 = 4.
-In the second round, your opponent will choose Paper (B), and you choose Rock so you lose (X) with a score of 1 + 0 = 1.
-In the third round, you will defeat your opponent's Scissors with Rock for a score of 1 + 6 = 7.
-Now that you're correctly decrypting the ultra top secret strategy guide, you would get a total score of 12.
+In the example above, the total size of the outermost directory (and thus the total amount of used space) is 48381165; this means that the size of the unused space must currently be 21618835, which isn't quite the 30000000 required by the update. Therefore, the update still requires a directory with total size of at least 8381165 to be deleted before it can run.
 
-Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide?
+To achieve this, you have the following options:
 
-Your puzzle answer was 11980.
+Delete directory e, which would increase unused space by 584.
+Delete directory a, which would increase unused space by 94853.
+Delete directory d, which would increase unused space by 24933642.
+Delete directory /, which would increase unused space by 48381165.
+Directories e and a are both too small; deleting them would not free up enough space. However, directories d and / are both big enough! Between these, choose the smallest: d, increasing unused space by 24933642.
+
+Find the smallest directory that, if deleted, would free up enough space on the filesystem to run the update. What is the total size of that directory?
+
+Your puzzle answer was 3579501.
 
 Both parts of this puzzle are complete! They provide two gold stars: **
 
