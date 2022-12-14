@@ -3,18 +3,18 @@ const fs = require("fs");
 const readline = require("readline");
 
 let dataObj = {};
-
+let divisor = 1;
 (async function processLineByLine() {
   try {
     const rl = readline.createInterface({
-      input: fs.createReadStream(`${__dirname}/input-basic.txt`),
-      // input: fs.createReadStream(`${__dirname}/input.txt`),
+      // input: fs.createReadStream(`${__dirname}/input-basic.txt`),
+      input: fs.createReadStream(`${__dirname}/input.txt`),
       crlfDelay: Infinity,
     });
 
     let monkeyName = "";
     let counter = -1;
-
+    // let divisor = 1
     rl.on("line", (line) => {
       counter++;
 
@@ -30,7 +30,9 @@ let dataObj = {};
           dataObj[monkeyName]["operation"] = line.substring(19);
           break;
         case 3:
+          const lineVal = Number(line.substring(21))
           dataObj[monkeyName]["test"] = line.substring(21);
+          divisor *= lineVal
           break;
         case 4:
           dataObj[monkeyName]["testTrue"] = line.substring(29);
@@ -41,20 +43,13 @@ let dataObj = {};
         case 6:
           break;
       }
-
-      // console.log("line", line);
-      // const lineArr = line.split(":");
-      // console.log("lineArr", lineArr);
-      // score += scoreMap[line]
-      // scorePart2 += scoreMapPart2[line]
     });
 
     await events.once(rl, "close");
 
     // console.log(dataObj);
-    for (let i = 0; i < 20 ; i++) processRound();
+    for (let i = 0; i < 10000; i++) processRound();
     // for (let i = 0; i < 20; i++) processRound();
-    console.log(dataObj);
     const testArr = Object.values(dataObj)
       .map((e) => e.timesInspected)
       .sort((a, b) => b - a);
@@ -64,7 +59,9 @@ let dataObj = {};
   }
 })();
 
-const divideBy3 = (val) => Math.floor(Number(val) / 4);
+
+// const divideBy3 = (val) => Math.floor(Number(val) / 4);
+const divideBy3 = (val) => (Number(val) % divisor);
 // const divideBy3 = (val) => Number(val);
 const calculateVal = (operation, val) =>
   divideBy3(eval(operation.replaceAll("old", val)));
@@ -80,7 +77,7 @@ const processRound = () => {
           ? selectedMonky.testTrue
           : selectedMonky.testFalse;
 
-          
+
       dataObj[monkeyToPass].items.push(newVal);
       selectedMonky.timesInspected++;
     });
@@ -89,12 +86,3 @@ const processRound = () => {
 };
 
 
-// const tests = Object.values(dataObj)
-//       .map((e) => e.timesInspected)
-//       .sort((a, b) => b - a);
-
-// for (let i = 0; i < Object.keys(tests).length; i++) {
-//   cycle_length *= tests[Object.keys(tests)[i]];
-// }
-
-// worryLevel = worryLevel % cycle_length;
